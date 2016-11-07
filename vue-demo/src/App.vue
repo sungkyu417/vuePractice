@@ -46,7 +46,7 @@ components: {
 },
 data(){
 	return{
-		totalTime:1.5
+		totalTime:2.5
 	}
 }
 //events:{

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+<div id="todo-list-example">
+  <input
+    v-model="newTodoText"
+    v-on:keyup.enter="addNewTodo"
+    placeholder="Add a todo"
+  >
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo, index) in todos"
+      v-bind:title="todo"
+      v-on:remove="todos.splice(index, 1)"
+    ></li>
+  </ul>
+ <ul>
+ 	 <li v-for="n in evenNumbers">{{ n }}</li>
+  </ul>
+</div>
+<div id="example-1">
+  <button v-on:click="counter += 1">增加 1</button>
+  <p>这个按钮被点击了 {{ counter }} 次。</p>
+</div>
+<div id="example-2">
+  <!-- `greet` 是在下面定义的方法名 -->
+  <button v-on:click="greet">Greet</button>
+</div>
+<child my-message="hello!"></child>
+<script>
+
+	Vue.component('todo-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">X</button>\
+    </li>\
+  ',
+  props: ['title']
+})
+new Vue({
+  el: '#todo-list-example',
+  data: {
+    newTodoText: '',
+    todos: [
+      'Do the dishes',
+      'Take out the trash',
+      'Mow the lawn'
+    ],
+    numbers:[1,2,3,4,5]
+  },
+  computed:{
+		evenNumbers:function(){
+			return this.numbers.filter(function(number){
+				return number%2===0;
+			});
+		}
+	},
+  methods: {
+    addNewTodo: function () {
+      this.todos.push(this.newTodoText)
+      this.newTodoText = ''
+    }
+  }
+})
+new Vue({
+  el: '#example-1',
+  data: {
+    counter: 0
+  }
+})
+new Vue({
+  el: '#example-2',
+  data: {
+    name: 'Vue.js'
+  },
+  // 在 `methods` 对象中定义方法
+  methods: {
+    greet: function (event) {
+      // `this` 在方法里指当前 Vue 实例
+      alert('Hello ' + this.name + '!')
+      // `event` 是原生 DOM 事件
+      alert(event.target.tagName)
+    }
+  }
+})
+Vue.component('child', {
+  // camelCase in JavaScript
+  props: ['myMessage'],
+  template: '<span>{{ myMessage }}</span>'
+})
+</script>
+	</body>
+</html>

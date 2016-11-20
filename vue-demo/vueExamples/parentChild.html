@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+		<div id="counter-event-example">
+		  <p>{{ total }}</p>
+		  <button-counter v-on:increment="incrementTotal"></button-counter>
+		  <button-counter v-on:increment="incrementTotal"></button-counter>
+		</div>
+		<div id="v-model-example">
+		  <p>{{ message }}</p>
+		  <my-input
+		    label="Message"
+		    v-model="message"
+		  ></my-input>
+		</div>
+		<script>
+			Vue.component('button-counter', {
+			  template: '<button v-on:click="increment">{{ counter }}</button>',
+			  data: function () {
+			    return {
+			      counter: 0
+			    }
+			  },
+			  methods: {
+			    increment: function () {
+			      this.counter += 1
+			      this.$emit('increment')
+			    }
+			  },
+			})
+			new Vue({
+			  el: '#counter-event-example',
+			  data: {
+			    total: 0
+			  },
+			  methods: {
+			    incrementTotal: function () {
+			      this.total += 1
+			    }
+			  }
+			})
+			Vue.component('my-input', {
+				  template: '\
+				    <div class="form-group">\
+				      <label v-bind:for="randomId">{{ label }}:</label>\
+				      <input v-bind:id="randomId" v-bind:value="value" v-on:input="onInput">\
+				    </div>\
+				  ',
+				  props: ['value', 'label'],
+				  data: function () {
+				    return {
+				      randomId: 'input-' + Math.random()
+				    }
+				  },
+				  methods: {
+				    onInput: function (event) {
+				      this.$emit('input', event.target.value)
+				    }
+				  },
+				})
+				new Vue({
+				  el: '#v-model-example',
+				  data: {
+				    message: 'hello'
+				  }
+				})
+		</script>
+	</body>
+</html>

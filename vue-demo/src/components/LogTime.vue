@@ -18,7 +18,7 @@
     </div>
     <button class="btn btn-primary" @click="save()">保存</button>
     <!-- <button v-link="'/time-entries'" class="btn btn-danger">取消</button> -->
-    <router-link to="/time-entries"><button v-link="'/time-entries'" class="btn btn-danger">取消</button></router-link>
+    <router-link to="/time-entries"><button class="btn btn-danger">取消</button></router-link>
     <hr>
   </div>
 
@@ -28,29 +28,23 @@
   export default {
     data () {
       return {
-        timeEntry: {
-        	user:{
-        		name:"sxl",
-        		email:"llll",
-        		image:"https://sfault-avatar.b0.upaiyun.com/888/223/888223038-5646dbc28d530_huge256"
-        	}
-        }
+        timeEntry: {}
       }
     },
     methods: {
       save () {
-//      this.$http.post('http://localhost:8888/create', {
-//        comment: this.timeEntry.comment,
-//        totalTime: this.timeEntry.totalTime,
-//        date: this.timeEntry.date
-//      }).then(function (ret) {
-//        console.log(ret)
+        this.$http.post('http://localhost:8888/create', {
+          comment: this.timeEntry.comment,
+          totalTime: this.timeEntry.totalTime,
+          date: this.timeEntry.date
+        }).then(function (ret) {
+          console.log(ret)
           let timeEntry = this.timeEntry
-//        console.log(timeEntry)
-          this.$dispatch('timeUpdate', timeEntry)
-//        this.$store.commit('timeUpdate', timeEntry)
+          console.log(timeEntry)
+//       	this.$dispatch('timeUpdate', timeEntry)
+          this.$store.commit('timeUpdate', timeEntry)
           this.timeEntry = {}
-//      })
+        })
       }
     }
   }

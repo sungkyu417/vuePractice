@@ -22,7 +22,7 @@
     <div class="container">
       <div class="col-sm-3">
         <!--<sidebar :time="$store.state.totalTime"></sidebar>-->
-        <sidebar :time="totalTime"></sidebar>
+        <sidebar :time="$store.state.totalTime"></sidebar>
       </div>
       <div class="col-sm-9">
         <router-view>
@@ -44,11 +44,21 @@ export default {
 components: {
     'sidebar':Sidebar
 },
-data(){
-	return{
-		totalTime:2.5
-	}
-}
+mounted () {
+      this.$http.get('http://localhost:8888/time')
+        .then(function (ret) {
+//       this.totalTime = ret.data.time
+        this.$store.commit('setTotalTime', ret.data.time)
+        })
+        .then(function (err) {
+          console.log(err)
+        })
+    }
+//data(){
+//	return{
+//		totalTime:2.5
+//	}
+//}
 //events:{
 //	timeUpdate(timeEntry){
 //		this.totalTime+=parseFloat(timeEntry.totalTime)
@@ -75,7 +85,6 @@ body {
 #app {
   color: #2c3e50;
   margin-top: -100px;
-  max-width: 600px;
   font-family: Source Sans Pro, Helvetica, sans-serif;
   text-align: center;
 }

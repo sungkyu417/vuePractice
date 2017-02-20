@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue</title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>{{title}}</h1>
+			<input id="addContent"  v-on:keypress.enter="addItem" v-model="input"/>
+				<button v-on:click="addItem">{{buttonText}}</button>
+			<template v-if="items.length>0">
+			<ul>
+				
+				<li v-for="(item,index) in items">
+					<button v-on:click="deleteItem(index)">×</button>
+					{{item.text}}</li>
+			</ul>
+			</template>
+			<p v-else>No items</p>
+			<ul>
+				<li v-for="(item,index) in items">
+					<button v-on:click="increment(index)">+</button>{{item.weight}}<button v-on:click="decrement(index)" v-bind:disabled="disabled">-</button>
+					<span>{{item.text | capitalize}}</span>
+					<span>{{item.weight | capitalize}}</span>
+					<span>{{item.text | lowerCase | url}}</span>
+				</li>
+			</ul>
+			<p>Total weight is :{{totalWeight}}</p>
+			<p>Total species are :{{species}}</p>
+		</div>
+	</body>
+	<script>
+		var app=new Vue({
+			el:"#app",
+			data:{
+				title:"ff",
+				disabled:false,
+				totalWeight:0,
+				species:0,
+				input:"",
+				buttonText:"add item",
+				items:[
+				{text:"ss",weight:"11"},
+				{text:'xx',weight:"11"},
+				{text:'ll',weight:"11"}
+				]
+			},
+			filters:{
+				capitalize:function(value){
+					if(!value){
+						return '';
+					}
+					value=value.toString();
+					return  value.charAt(0).toUpperCase()+value.slice(1);
+				},
+				lowerCase:function(value){
+					if(!value)return "";
+					value=value.toString();
+					return value.toLowerCase();
+				},
+				url:function(value){
+					return "http://baidu.com/"+value;
+				}
+			},
+			watch:{
+				input:function(){
+					this.buttonText=this.input!==""?"add "+this.input:"add item";
+				}
+			},
+			computed:{
+				totalWeight:function(){
+					var sum=0;
+					for(var i=0;i<this.items.length;i++){
+						var weight=parseInt(this.items[i].weight)
+						sum+=weight;
+					}
+					return sum;
+				},
+				species:function(){
+					return this.items.length;
+				}
+			},
+			methods:{
+				addItem:function(){
+					var newItem=document.getElementById("addContent");
+					if(newItem.value!=''){
+						this.items.push({text:newItem.value});
+						newItem.value="";
+					}
+					
+				},
+				deleteItem:function(index){
+					this.items.splice(index,1);
+				},
+				increment:function(index){
+					this.items[index].weight++;
+				},
+				decrement:function(index){
+					if(this.items[index].weight==0){
+						this.disabled=true;
+					}else{
+						this.disabled=false;
+						this.items[index].weight--;
+					}
+					
+					
+				}
+			}
+			
+		});
+	</script>
+</html>

@@ -18,12 +18,12 @@
     <router-view></router-view>
 
     <div class="time-entries">
-    	<p v-if="!timeEntries.length"><strong>还没有任何任务</strong></p> 
-     <!-- <p v-if="!$store.state.timeEntries.length"><strong>还没有任何任务</strong></p>
--->
+    	<!--<p v-if="!timeEntries.length"><strong>还没有任何任务</strong></p> -->
+     <p v-if="!$store.state.timeEntries.length"><strong>还没有任何任务</strong></p>
+
       <div class="list-group">
         <!-- v-for 循环渲染 -->
-        <a class="list-group-item" v-for="timeEntry in timeEntries">
+        <a class="list-group-item" v-for="timeEntry in $store.state.timeEntries">
           <div class="row">
 
             <!-- 头像和昵称暂时写死 -->
@@ -66,91 +66,91 @@
 </template>
 
 <script>
-export default {
-	data () {
-		let existingEntry={
-			user:{
-				name:"sss",
-				email:"xxx",
-				image:"https://sfault-avatar.b0.upaiyun.com/888/223/888223038-5646dbc28d530_huge256"
-			},
-			comment:'lll',
-			totalTime:1.5,
-			date:'2016-05-01'
-		}
-		return {
-			timeEntries:[existingEntry]
-		}
-	},
-	methods:{
-		deleteTimeEntry(timeEntry){
-			let index=this.timeEntries.indexOf(timeEntry)
-			if(window.confirm('Sure to Delete')){
-				this.timeEntries.splice(index,1)
-				this.$dispatch('deleteTime',timeEntry)
-			}
-		}
-	},
-	events:{
-		timeUpdate(timeEntry){
-			this.timeEntries.push(tmmieEntry)
-			return true
-		}
-	}
-}
 //export default {
-//  // data () {
-//  //   return {
-//  //     timeEntries: []
-//  //   }
-//  // },
-//  created () {
-//      // 组件创建完后获取数据，
-//      // 此时 data 已经被 observed 了
-//    this.fetchData()
-//  },
-//  watch: {
-//    // 如果路由有变化，会再次执行该方法
-//    '$route': 'fetchData'
-//  },
-//  methods: {
-//    fetchData () {
-//      this.$http.get('http://localhost:8888/time-entries')
-//      .then(function (ret) {
-//        // state.timeEntries = ret.data
-//        this.$store.commit('fetchData', ret.data)
-//      })
-//      .then(function (err) {
-//        console.log(err)
-//      })
-//      this.$store.state.timeEntries
-//    },
-//    deleteTimeEntry (timeEntry) {
-//      // 这个方法用于删除某一项计划
-//      // let index = this.$store.state.timeEntries.indexOf(timeEntry)
-//      // let _id = this.$store.state.timeEntries[index]._id
-//      let _id = timeEntry._id
-//      if (window.confirm('确认删除?')) {
-//        this.$http.delete('http://localhost:8888/delete/' + _id)
-//          .then(function (ret) {
-//            console.log(ret)
-//          })
-//          .then(function (err) {
-//            console.log(err)
-//          })
-//        // this.timeEntries.splice(index, 1)
-//        this.$store.commit('deleteTimeEntry', timeEntry)
-//      }
-//    }
-//  }
-    // events: {
-    //   timeUpdate (timeEntry) {
-    //     this.timeEntries.push(timeEntry)
-    //       // 继续向上派发
-    //     return true
-    //   }
-    // }
+//	data () {
+//		let existingEntry={
+//			user:{
+//				name:"sss",
+//				email:"xxx",
+//				image:"https://sfault-avatar.b0.upaiyun.com/888/223/888223038-5646dbc28d530_huge256"
+//			},
+//			comment:'lll',
+//			totalTime:1.5,
+//			date:'2016-05-01'
+//		}
+//		return {
+//			timeEntries:[existingEntry]
+//		}
+//	},
+//	methods:{
+//		deleteTimeEntry(timeEntry){
+//			let index=this.timeEntries.indexOf(timeEntry)
+//			if(window.confirm('Sure to Delete')){
+//				this.timeEntries.splice(index,1)
+//				this.$dispatch('deleteTime',timeEntry)
+//			}
+//		}
+//	},
+//	events:{
+//		timeUpdate(timeEntry){
+//			this.timeEntries.push(tmmieEntry)
+//			return true
+//		}
+//	}
 //}
+export default {
+    // data () {
+    //   return {
+    //     timeEntries: []
+    //   }
+    // },
+    created () {
+        // 组件创建完后获取数据，
+        // 此时 data 已经被 observed 了
+      this.fetchData()
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'fetchData'
+    },
+    methods: {
+      fetchData () {
+        this.$http.get('http://localhost:8888/time-entries')
+        .then(function (ret) {
+          // state.timeEntries = ret.data
+          this.$store.commit('fetchData', ret.data)
+        })
+        .then(function (err) {
+          console.log(err)
+        })
+        this.$store.state.timeEntries
+      },
+      deleteTimeEntry (timeEntry) {
+        // 这个方法用于删除某一项计划
+        // let index = this.$store.state.timeEntries.indexOf(timeEntry)
+        // let _id = this.$store.state.timeEntries[index]._id
+        let _id = timeEntry._id
+        if (window.confirm('确认删除?')) {
+          this.$http.delete('http://localhost:8888/delete/' + _id)
+            .then(function (ret) {
+              console.log(ret)
+            })
+            .then(function (err) {
+              console.log(err)
+            })
+          // this.timeEntries.splice(index, 1)
+          this.$store.commit('deleteTimeEntry', timeEntry)
+        }
+      }
+    },
+       events: {
+         timeUpdate (timeEntry) {
+           this.timeEntries.push(timeEntry)
+             // 继续向上派发
+           return true
+         }
+       }
+}
 </script>
 
 <style>
